@@ -1,0 +1,35 @@
+{
+  "name": "midterm-elections-2018-server",
+  "version": "1.0.0",
+  "description": "Back-end server for 2018 midterm election results",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "ts-node node_modules/tape/bin/tape src/**/spec.ts",
+    "prestart": "tsc",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sa-express-news/texas-doctors-accepted-payments-server.git"
+  },
+  "author": "Luke Whyte",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sa-express-news/texas-doctors-accepted-payments-server/issues"
+  },
+  "dependencies": {
+    "csv": "^4.0.0",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.110",
+    "@types/node": "^8.0.53",
+    "@types/request-promise": "^4.1.41",
+    "@types/tape": "^4.2.31",
+    "dotenv": "^4.0.0",
+    "tape": "^4.8.0",
+    "ts-node": "^7.0.0",
+    "typescript": "^3.0.1"
+  }
+}
