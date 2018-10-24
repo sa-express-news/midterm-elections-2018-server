@@ -20,13 +20,15 @@
   "dependencies": {
     "csv": "^4.0.0",
     "request": "^2.87.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "winston": "^3.1.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.110",
     "@types/node": "^8.0.53",
     "@types/request-promise": "^4.1.41",
     "@types/tape": "^4.2.31",
+    "@types/winston": "^2.4.4",
     "dotenv": "^4.0.0",
     "tape": "^4.8.0",
     "ts-node": "^7.0.0",
