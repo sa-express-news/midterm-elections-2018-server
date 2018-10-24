@@ -27,8 +27,8 @@
 
 Some candidate properties can only have one of a few values. Those are defined here:
 
- - `party`: 'republican', 'democrat', 'libertarian' or 'unknown'
- - `winner`: 'X': The candidate is a winner, 'R': Candidate is advancing to runoff, 'N': candidate no longer winner due to race call reversal
+ - `party`: `republican`, `democrat`, `libertarian` or `unknown`
+ - `winner`: `X`: The candidate is a winner, `R`: Candidate is advancing to runoff, `N`: candidate no longer winner due to race call reversal
 
 Also note the following:
  - A value of `false` for the `incumbent` property doesn't necessarily mean they weren't the incumbent, only that the API didn't specify. On the other hand, it will only be `true` if the API specifically declared it so.
