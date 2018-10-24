@@ -22,13 +22,6 @@ export const fetchJSON = async (url: string, logger: Logger): Promise<any> => {
     }
 };
 
-export const buildURL = () => {
-    const base     = process.env.AP_URL;
-    const raceIDs  = process.env.RACE_IDS;
-    const apiKey   = process.env.AP_KEY;
-    return `${base}&raceID=${raceIDs}&apiKey=${apiKey}`;
-};
-
 export const setName = ({ first, middle, last, suffix }: APDataCandidate) => {
     middle = middle ? ` ${middle}` : '';
     suffix = suffix ? ` ${suffix}` : '';
@@ -73,8 +66,8 @@ export const formatData = (apData: APData) => {
     const races = apData.races.map(mapRace);
 };
 
-export default async logger => {
-    const apData: APData = await fetchJSON(buildURL(), logger);
+export default async (url, logger) => {
+    const apData: APData = await fetchJSON(url, logger);
 
     if (!apData.hasOwnProperty('errorMsg')) {
         return formatData(apData);

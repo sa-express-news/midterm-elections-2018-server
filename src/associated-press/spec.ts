@@ -1,11 +1,9 @@
-require('dotenv').config();
-
 import * as test from 'tape';
 
 import createLogger from '../logger';
+import DataStore from '../DataStore';
 
 import {
-    buildURL,
     fetchJSON,
     setName,
     mapParty,
@@ -14,19 +12,9 @@ import {
     mapRace
 } from './index';
 
-test('buildURL constructs query URL', t => {
-    const apiKey   = process.env.AP_KEY;
-    const raceIDs  = process.env.RACE_IDS;
-
-    const result = buildURL();
-    const expected = `https://api.ap.org/v2/elections/2018-11-06?format=json&raceID=${raceIDs}&apiKey=${apiKey}`;
-    
-    t.equal(result, expected);
-    t.end();
-});
-
 test('fetchURL returns raw AP data', async t => {
-    const response  = await fetchJSON(buildURL(), createLogger());
+    const dataStore = new DataStore()
+    const response  = await fetchJSON(dataStore.getAPUrl(), createLogger());
 
     const result    = response.electionDate;
     const expected  = '2018-11-06';

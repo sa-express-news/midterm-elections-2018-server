@@ -54,3 +54,12 @@ export interface Race {
     isNational: boolean;
     candidates: Array<Candidate>;
 }
+
+// Data store interfaces
+
+export interface DataStoreInstance {
+    setAPUrl: Function;
+    getAPUrl: Function;
+    setData: Function;
+    getData: Function;
+}
