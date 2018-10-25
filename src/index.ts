@@ -5,7 +5,7 @@ import { Logger } from 'winston';
 
 // modules
 import createLogger   from './logger';
-import DataStore      from './DataStore';
+import DataStore      from './data-store';
 import ap             from './associated-press';
 
 const main = async () => {

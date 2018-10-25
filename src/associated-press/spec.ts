@@ -1,7 +1,7 @@
 import * as test from 'tape';
 
 import createLogger from '../logger';
-import DataStore from '../DataStore';
+import DataStore from '../data-store';
 
 import {
     fetchJSON,

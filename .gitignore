@@ -2,7 +2,7 @@
 /dist
 
 # Secret key for Google Sheets auth
-client_secret.json
+.google-sheets-credentials.json
 
 .env
 

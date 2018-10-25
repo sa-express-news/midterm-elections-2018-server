@@ -66,7 +66,7 @@ export const formatData = (apData: APData) => {
     const races = apData.races.map(mapRace);
 };
 
-export default async (url, logger) => {
+export const getData = async (url: string, logger: Logger) => {
     const apData: APData = await fetchJSON(url, logger);
 
     if (!apData.hasOwnProperty('errorMsg')) {
@@ -75,3 +75,7 @@ export default async (url, logger) => {
         return [];
     }
 };
+
+export default {
+    getData,
+}
