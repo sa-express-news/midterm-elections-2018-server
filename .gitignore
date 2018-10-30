@@ -1,5 +1,6 @@
 /node_modules
 /dist
+/logs/errors.log
 
 # Secret key for Google Sheets auth
 .google-sheets-credentials.json
