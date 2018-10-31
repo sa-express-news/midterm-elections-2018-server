@@ -42,7 +42,11 @@ test('authorize should return oauth2Client object', async t => {
 test('fetchData should return the google sheet data', async t => {
     const credentials = await loadLocalJson('.google-sheets-credentials.json');
     const oauth2Client = await authorize(credentials);
-    const result = await fetchData(oauth2Client, process.env.SPREADSHEET_ID as string, "HOUSTON!A1:N")
-    console.log(result);
+    const response = await fetchData(oauth2Client, process.env.SPREADSHEET_ID, ['HOUSTON!A2:AB', 'SAN_ANTONIO!A2:AB']);
+    
+    const result = response.data.map(hash => hash.range);
+    const expected = ['HOUSTON!A2:AB986', 'SAN_ANTONIO!A2:Z1003'];
+    t.deepEqual(result, expected);
+
     t.end();
 });

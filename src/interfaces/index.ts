@@ -35,7 +35,7 @@ export interface APData {
     electionDate: string;
     timestamp: string;
     races: Array<APDataRace>;
-    nextRequest: string;
+    nextrequest: string;
 }
 
 // race response interfaces to be sent to client
@@ -45,7 +45,7 @@ export interface Candidate {
     votes: number;
     party: string;
     incumbent: boolean;
-    winner?: boolean;
+    winner: boolean;
 }
 
 export interface Race {
@@ -64,6 +64,17 @@ export interface DataStoreInstance {
     getData: Function;
 }
 
+export interface RaceHashes {
+    houston: {
+        hash: Map<number, Race>;
+        ids: Set<number>;
+    };
+    sa: {
+        hash: Map<number, Race>;
+        ids: Set<number>;
+    };
+}
+
 // Google sheets
 
 export interface GoogleCredentials {
@@ -76,4 +87,20 @@ export interface GoogleCredentials {
         client_secret: string;
         redirect_uris: string[];
     };
+}
+
+export interface GoogleSheet {
+    range: string;
+    majorDimension: string;
+    values: Array<Array<string>>;
+}
+
+export interface GoogleSheetResponse {
+    errorMsg?: string;
+    data?: Array<GoogleSheet>;
+}
+
+export interface GoogleSheetData {
+    houston: Array<Race>;
+    sa: Array<Race>;
 }

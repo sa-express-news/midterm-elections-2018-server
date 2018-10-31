@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 import * as rp from 'request-promise';
 
 // interfaces
@@ -37,23 +35,13 @@ export const mapParty = (party: string) => {
     return map[party] ? map[party] : 'unknown';
 };
 
-export const addPropIfExists = (inObj: APDataCandidate, outObj: Candidate, prop: string) => {
-    if (inObj[prop]) {
-        return Object.assign({}, outObj, { [prop]: inObj[prop] });
-    } else {
-        return outObj;
-    }
-};
-
-export const mapCandidate = (candidate: APDataCandidate) => {
-    const base = {
-        name: setName(candidate),
-        votes: candidate.voteCount,
-        party: mapParty(candidate.party),
-        incumbent: !!candidate.incumbent,
-    };
-    return addPropIfExists(candidate, base, 'winner');
-};
+export const mapCandidate = (candidate: APDataCandidate) => ({
+    name: setName(candidate),
+    votes: candidate.voteCount,
+    party: mapParty(candidate.party),
+    incumbent: !!candidate.incumbent,
+    winner: !!candidate.winner && candidate.winner === 'X'
+});
 
 export const mapRace = ({ raceID, officeName, national, candidates }: APDataRace) => ({
     id: parseInt(raceID, 10),
@@ -62,9 +50,10 @@ export const mapRace = ({ raceID, officeName, national, candidates }: APDataRace
     candidates: candidates.map(mapCandidate),
 });
 
-export const formatData = (apData: APData) => {
-    const races = apData.races.map(mapRace);
-};
+export const formatData = (apData: APData) => ({
+    races: apData.races.map(mapRace),
+    nextUrl: apData.nextrequest,
+});
 
 export const getData = async (url: string, logger: Logger) => {
     const apData: APData = await fetchJSON(url, logger);
@@ -72,7 +61,10 @@ export const getData = async (url: string, logger: Logger) => {
     if (!apData.hasOwnProperty('errorMsg')) {
         return formatData(apData);
     } else {
-        return [];
+        return {
+            races: [],
+            nextUrl: null,
+        };
     }
 };
 

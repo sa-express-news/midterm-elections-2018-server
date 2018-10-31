@@ -4,13 +4,12 @@
 
 import * as fs from 'fs';
 import * as readlineSync from 'readline-sync';
-import { promisify } from "util";
 
-const google     = require('googleapis');
-const googleAuth = require('google-auth-library');
+const { google }       = require('googleapis');
+const { OAuth2Client } = require('google-auth-library');
 
 // interfaces
-import { GoogleCredentials } from '../interfaces';
+import { GoogleCredentials, GoogleSheetResponse } from '../interfaces';
 
 const writeLocalJson = (path: string, data: any): Promise<GoogleCredentials> => new Promise((resolve, reject) => {
     fs.writeFile(path, data, (err) => {
@@ -105,8 +104,7 @@ export const authorize = async (credentials: GoogleCredentials): Promise<any> =>
     const clientSecret = credentials.installed.client_secret;
     const clientId     = credentials.installed.client_id;
     const redirectUrl  = credentials.installed.redirect_uris[0];
-    const auth         = new googleAuth();
-    const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
+    const oauth2Client = new OAuth2Client(clientId, clientSecret, redirectUrl);
 
     try {
         oauth2Client.credentials = await loadLocalJson(getTokenPath());
@@ -120,19 +118,9 @@ export const authorize = async (credentials: GoogleCredentials): Promise<any> =>
  * Fetches all rows in a provided range for a given spreadsheet.
  */
 
-export const fetchData = async (auth: any, spreadsheetId: string, range: string): Promise<string[][]> => {
-    const sheets = google.sheets("v4");
-
-    const get = promisify(sheets.spreadsheets.values.get);
-    try {
-        const data: { values: string[][] } = await get({
-            auth,
-            range,
-            spreadsheetId,
-        });
-
-        return data.values;
-    } catch (error) {
-        throw error;
-    }
-};
+export const fetchData = async (auth: any, spreadsheetId: string, ranges: Array<string>): Promise<GoogleSheetResponse> => new Promise(resolve => {
+    return google.sheets("v4").spreadsheets.values.batchGet({ auth, ranges, spreadsheetId }, (err, response) => {
+        if (err) return resolve({ errorMsg: err.toString() });
+        return resolve({ data: response.data.valueRanges });
+    });
+});

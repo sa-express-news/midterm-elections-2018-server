@@ -7,19 +7,24 @@ import {
     fetchJSON,
     setName,
     mapParty,
-    addPropIfExists,
     mapCandidate,
-    mapRace
+    mapRace,
+    formatData
 } from './index';
 
-test('fetchURL returns raw AP data', async t => {
-    const dataStore = new DataStore()
-    const response  = await fetchJSON(dataStore.getAPUrl(), createLogger());
+test('fetchJSON returns raw AP data or errorMsg property', async t => {
+    const dataStore = new DataStore();
 
-    const result    = response.electionDate;
-    const expected  = '2018-11-06';
+    const responseOne  = await fetchJSON(dataStore.getAPUrl(), createLogger());
+    const resultOne    = responseOne.electionDate;
+    const expectedOne  = '2018-11-06';
+    t.equal(resultOne, expectedOne);
 
-    t.equal(result, expected);
+    const responseTwo = await fetchJSON('https://api.ap.org/v2/elections/2018-11-06?format=json&apiKey=999', createLogger());
+    const resultTwo   = responseTwo.hasOwnProperty('errorMsg');
+    const expectedTwo = true;
+    t.equal(resultTwo, expectedTwo);
+
     t.end();
 });
 
@@ -57,30 +62,6 @@ test('mapParty should map a party name string to a string the client will recogn
     t.end();
 });
 
-test('addPropIfExists should search for a property in the inObj and, if it exists, add it to the outObj', t => {
-    const inObj = {
-        first: 'Luke',
-        last: 'Whyte',
-        winner: 'X',
-    };
-
-    const outObj = {
-        name: 'Luke Whyte',
-        votes: 10,
-        party: 'pickle',
-        incumbent: false,
-    }
-
-    let result = addPropIfExists(inObj, outObj, 'winner');
-    const expected = Object.assign({}, outObj, { winner: 'X' });
-    t.deepEqual(result, expected);
-
-    result = addPropIfExists(inObj, expected, 'superhero');
-    t.deepEqual(result, expected);
-
-    t.end();
-});
-
 test('mapCandidate should map an AP API candidate obj to a Candidate obj', t => {
     const apCandidate = {
         first: 'Luke',
@@ -94,12 +75,34 @@ test('mapCandidate should map an AP API candidate obj to a Candidate obj', t => 
     let expected = {
         name: 'Luke Whyte',
         votes: 20,
-        winner: 'R',
         party: 'unknown',
         incumbent: false,
+        winner: false,
     };
-
     t.deepEqual(result, expected);
+
+    apCandidate.winner = 'X';
+    result = mapCandidate(apCandidate);
+    expected = {
+        name: 'Luke Whyte',
+        votes: 20,
+        party: 'unknown',
+        incumbent: false,
+        winner: true,
+    };
+    t.deepEqual(result, expected);
+
+    delete apCandidate.winner;
+    result = mapCandidate(apCandidate);
+    expected = {
+        name: 'Luke Whyte',
+        votes: 20,
+        party: 'unknown',
+        incumbent: false,
+        winner: false,
+    };
+    t.deepEqual(result, expected);
+
     t.end();
 });
 
@@ -139,11 +142,12 @@ test('mapRace should map an AP API race obj to a Race obj', t => {
                 votes: 20,
                 party: 'unknown',
                 incumbent: false,
+                winner: false,
             },
             {
                 name: 'Evil Twin Sr.',
                 votes: 1000,
-                winner: 'X',
+                winner: true,
                 party: 'unknown',
                 incumbent: true,
             },
@@ -151,5 +155,49 @@ test('mapRace should map an AP API race obj to a Race obj', t => {
     };
 
     t.deepEqual(result, expected);
+    t.end();
+});
+
+test('formatData should convert raw races to Race interface and then return object with races and nextUrl prop', t => {
+    const apRaceNoID = {
+        officeID: '234234',
+        officeName: 'Dungeon Master',
+        candidates: [
+            {
+                first: 'Luke',
+                last: 'Whyte',
+                voteCount: 20,
+                party: 'pickle',
+            },
+            {
+                first: 'Evil',
+                last: 'Twin',
+                suffix: 'Sr.',
+                voteCount: 1000,
+                winner: 'X',
+                party: 'doomsday',
+                incumbent: true,
+            }
+        ],
+        lastUpdated: '22:00:00',
+    };
+
+    const apData = {
+        electionDate: '11/11/11',
+        timestamp: '0098729',
+        nextrequest: 'https://www.website.com',
+        races: ['45871','45872','46097','45870'].map(id => Object.assign({}, apRaceNoID, { raceID: id })),
+    };
+
+    const data = formatData(apData);
+    
+    const resultOne = data.races[1].id;
+    const expectedOne = 45872;
+    t.equal(resultOne, expectedOne);
+
+    const resultTwo = data.nextUrl;
+    const expectedTwo = 'https://www.website.com';
+    t.equal(resultTwo, expectedTwo);
+
     t.end();
 });
