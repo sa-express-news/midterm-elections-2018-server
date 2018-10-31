@@ -4,6 +4,8 @@ import * as test from 'tape';
 
 import { loadLocalJson, getTokenPath, authorize, fetchData } from './utils';
 
+import { isHouston, mapCandidate } from './index';
+
 test('loadLocalJson pulls and parses the google sheet credentials from project root or throws error', async t => {
     let credentials = await loadLocalJson('.google-sheets-credentials.json');
     let result = credentials.installed.auth_uri;
@@ -46,6 +48,63 @@ test('fetchData should return the google sheet data', async t => {
     
     const result = response.data.map(hash => hash.range);
     const expected = ['HOUSTON!A2:AB986', 'SAN_ANTONIO!A2:Z1003'];
+    t.deepEqual(result, expected);
+
+    t.end();
+});
+
+test('isHouston should detect if data comes from Houston or SA sheet', t => {
+    let result = isHouston('HOUSTON!A2:AB986');
+    let expected = true;
+    t.equal(result, expected);
+
+    result = isHouston('SAN_ANTONIO!A2:Z1003');
+    expected = false;
+    t.equal(result, expected);
+
+    t.end();
+});
+
+test('mapCandidate should take a 3 element array and return a Candidate object', t => {
+    let incumbent = 'Frank Sharp';
+    let winner = '';
+
+    const candidate = [
+        'Luke Whyte',
+        '300',
+        'Pickle'
+    ];
+
+    let result = mapCandidate(candidate, incumbent, winner);
+    let expected = {
+        name: 'Luke Whyte',
+        votes: 300,
+        party: 'Pickle',
+        incumbent: false,
+        winner: false,
+    };
+    t.deepEqual(result, expected);
+
+    winner = 'Luke Whyte';
+    result = mapCandidate(candidate, incumbent, winner);
+    expected = {
+        name: 'Luke Whyte',
+        votes: 300,
+        party: 'Pickle',
+        incumbent: false,
+        winner: true,
+    };
+    t.deepEqual(result, expected);
+
+    incumbent = 'Luke Whyte';
+    result = mapCandidate(candidate, incumbent, winner);
+    expected = {
+        name: 'Luke Whyte',
+        votes: 300,
+        party: 'Pickle',
+        incumbent: true,
+        winner: true,
+    };
     t.deepEqual(result, expected);
 
     t.end();
