@@ -31,11 +31,15 @@ class DataStore implements DataStoreInstance {
         };
     }
 
+    private addAPIKeyToURL () {
+        return `&apiKey=${process.env.AP_KEY}`;
+    }
+
     private getBaseAPUrl () {
         const base     = process.env.AP_URL;
         const raceIDs  = `${process.env.SHARED_RACE_IDS},${process.env.HOUSTON_RACE_IDS},${process.env.SA_RACE_IDS}`;
         const apiKey   = process.env.AP_KEY;
-        return `${base}&raceID=${raceIDs}&apiKey=${apiKey}`;
+        return `${base}&raceID=${raceIDs}${this.addAPIKeyToURL()}`;
     }
 
     private addToHash (race: Race, market: 'houston' | 'sa') {
@@ -49,7 +53,7 @@ class DataStore implements DataStoreInstance {
     }
 
     public setAPUrl (url: string) {
-        return this.nextAPUrl = url;
+        return this.nextAPUrl = `${url}${this.addAPIKeyToURL()}`;
     }
 
     public getAPUrl () {

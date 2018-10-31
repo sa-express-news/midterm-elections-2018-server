@@ -15,10 +15,19 @@ export const getEmptyData = (): GoogleSheetData => ({ houston: [], sa: [] });
 
 export const isHouston = (range: string) => range.indexOf('HOUSTON') !== -1;
 
+export const mapParty = (party: string) => {
+    const map = {
+        'Democrat': 'democrat',
+        'Republican': 'republican',
+        'Libertarian': 'libertarian',
+    };
+    return map[party] ? map[party] : 'unknown';
+};
+
 export const mapCandidate = (candidate: Array<string>, incumbent: string, winner: string) => ({
     name: candidate[0],
     votes: parseInt(candidate[1], 10),
-    party: candidate[2],
+    party: mapParty(candidate[2]),
     incumbent: candidate[0] === incumbent,
     winner: candidate[0] === winner,
 });
@@ -35,8 +44,10 @@ export const getCandidates = (candidateArr: Array<string>, output: Array<Candida
     return output;
 };
 
-export const mapRace = (raceArr: Array<string>, idx: number) => ({
-    id: parseInt(raceArr[0], 10),
+export const setIDBaseNumber = (market: string) => market === 'houston' ? 100000 : 200000;
+
+export const mapRace = (raceArr: Array<string>, IDBaseNumber: number) => ({
+    id: parseInt(raceArr[0], 10) + IDBaseNumber,
     title: raceArr[1],
     isNational: false,
     candidates: getCandidates(raceArr.slice(2), []),
@@ -44,7 +55,7 @@ export const mapRace = (raceArr: Array<string>, idx: number) => ({
 
 export const parseData = (data: Array<GoogleSheet>) => data.reduce((res: GoogleSheetData, hash: GoogleSheet) => {
     const market = isHouston(hash.range) ? 'houston' : 'sa';
-    res[market] = hash.values.map(mapRace);
+    res[market] = hash.values.map((raceArr: Array<string>) => mapRace(raceArr, setIDBaseNumber(market)));
     return res;
 }, getEmptyData());
 

@@ -17,6 +17,21 @@ test('getAPUrl constructs query URL', t => {
     t.end();
 });
 
+test('setAPUrl takes a URL adds a apiKey to the string and returns it', t => {
+    const dataStore = new DataStore();
+    const baseURL = 'http://www.website.com?format=json';
+
+    dataStore.setAPUrl(baseURL);
+    const url = dataStore.getAPUrl();
+    const queryKey = '&apiKey=';
+
+    const result = url.slice(0, url.indexOf(queryKey) + queryKey.length);
+    const expected = 'http://www.website.com?format=json&apiKey=';
+    t.equal(result, expected);
+
+    t.end();
+})
+
 test('setData should take an array of races and add them to their respective hashes, getData should return one of those hashes' , t => {
     const dataStore = new DataStore();
     const races = [
@@ -30,6 +45,7 @@ test('setData should take an array of races and add them to their respective has
                     votes: 20,
                     party: 'unknown',
                     incumbent: false,
+                    winner: false,
                 },
                 {
                     name: 'Jobs McJobby',
@@ -50,6 +66,7 @@ test('setData should take an array of races and add them to their respective has
                     votes: 20,
                     party: 'unknown',
                     incumbent: false,
+                    winner: false,
                 },
                 {
                     name: 'Patrick Swazey in Roadhouse',
@@ -70,6 +87,7 @@ test('setData should take an array of races and add them to their respective has
                     votes: 20,
                     party: 'unknown',
                     incumbent: false,
+                    winner: false,
                 },
                 {
                     name: 'Janet Reno',
@@ -90,6 +108,7 @@ test('setData should take an array of races and add them to their respective has
                     votes: 20,
                     party: 'unknown',
                     incumbent: false,
+                    winner: false,
                 },
                 {
                     name: 'Niece That Works In Computers',
@@ -110,6 +129,7 @@ test('setData should take an array of races and add them to their respective has
                     votes: 20,
                     party: 'unknown',
                     incumbent: false,
+                    winner: false,
                 },
                 {
                     name: 'Gal From Michigan',
