@@ -43,11 +43,12 @@ export const mapCandidate = (candidate: APDataCandidate) => ({
     winner: !!candidate.winner && candidate.winner === 'X'
 });
 
-export const mapRace = ({ raceID, officeName, national, candidates }: APDataRace) => ({
+export const mapRace = ({ raceID, officeName, national, reportingUnits }: APDataRace) => ({
     id: parseInt(raceID, 10),
     title: officeName,
     isNational: !!national,
-    candidates: candidates.map(mapCandidate),
+    // We only take the first reporting unit for candidates because we only want state level results
+    candidates: reportingUnits[0].candidates.map(mapCandidate), 
 });
 
 export const formatData = (apData: APData) => ({
