@@ -43,11 +43,18 @@ export const mapCandidate = (candidate: APDataCandidate) => ({
     winner: !!candidate.winner && candidate.winner === 'X'
 });
 
-export const mapRace = ({ raceID, officeName, national, candidates }: APDataRace) => ({
+const shouldMapToSeat = new Set(['U.S. House', 'State House', 'State Senate']);
+export const setTitle = (officeName: string, seatName: string) => shouldMapToSeat.has(officeName) && seatName ? seatName : officeName;
+
+export const mapRace = ({ raceID, officeName, seatName, national, reportingUnits }: APDataRace) => ({
     id: parseInt(raceID, 10),
-    title: officeName,
+    title: setTitle(officeName, seatName),
     isNational: !!national,
-    candidates: candidates.map(mapCandidate),
+    // We only take the first reporting unit for candidates because we only want state level results
+    candidates: reportingUnits[0].candidates.map(mapCandidate),
+    percentPrecinctsReporting: reportingUnits[0].precinctsReportingPct ? reportingUnits[0].precinctsReportingPct : 0,
+    source: 'Associated Press',
+    source_url: 'https://developer.ap.org/ap-elections-api/',
 });
 
 export const formatData = (apData: APData) => ({

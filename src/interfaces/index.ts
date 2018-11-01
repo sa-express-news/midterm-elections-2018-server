@@ -17,6 +17,17 @@ export interface APDataCandidate {
     voteCount?: number;
 }
 
+export interface APDataReportingUnits {
+    statePostal: string;
+    stateName: string;
+    level: string;
+    lastUpdated: string;
+    precinctsReporting: number;
+    precinctsTotal: number;
+    precinctsReportingPct: number;
+    candidates: Array<APDataCandidate>;
+}
+
 export interface APDataRace {
     raceID: string;
     raceTypeID?: string;
@@ -28,7 +39,7 @@ export interface APDataRace {
     uncontested?: boolean;
     national?: boolean;
     lastUpdated?: string;
-    candidates: Array<APDataCandidate>;
+    reportingUnits: Array<APDataReportingUnits>;
 }
 
 export interface APData {
@@ -43,7 +54,7 @@ export interface APData {
 export interface Candidate {
     name: string;
     votes: number;
-    party: string;
+    party?: string;
     incumbent: boolean;
     winner: boolean;
 }
@@ -53,6 +64,9 @@ export interface Race {
     title: string;
     isNational: boolean;
     candidates: Array<Candidate>;
+    percentPrecinctsReporting?: number;
+    source?: string;
+    source_url?: string;
 }
 
 // Data store interfaces

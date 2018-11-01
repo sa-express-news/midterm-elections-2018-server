@@ -8,6 +8,7 @@ import {
     setName,
     mapParty,
     mapCandidate,
+    setTitle,
     mapRace,
     formatData
 } from './index';
@@ -106,26 +107,60 @@ test('mapCandidate should map an AP API candidate obj to a Candidate obj', t => 
     t.end();
 });
 
+test('setTitle should take officeName and seatName and map to seat when appropriate', t => {
+    let officeName = 'Land Commissioner';
+    let seatName;
+
+    let result = setTitle(officeName, seatName);
+    let expected = 'Land Commissioner';
+    t.equal(result, expected);
+
+    officeName = 'State Senate';
+
+    result = setTitle(officeName, seatName);
+    expected = 'State Senate';
+    t.equal(result, expected);
+
+    seatName = 'District 21';
+
+    result = setTitle(officeName, seatName);
+    expected = 'District 21';
+    t.equal(result, expected);
+
+    t.end();
+});
+
 test('mapRace should map an AP API race obj to a Race obj', t => {
     const apRace = {
         raceID: '87687',
         officeID: '234234',
         officeName: 'Dungeon Master',
-        candidates: [
+        reportingUnits: [
             {
-                first: 'Luke',
-                last: 'Whyte',
-                voteCount: 20,
-                party: 'pickle',
-            },
-            {
-                first: 'Evil',
-                last: 'Twin',
-                suffix: 'Sr.',
-                voteCount: 1000,
-                winner: 'X',
-                party: 'doomsday',
-                incumbent: true,
+                statePostal: 'TX',
+                stateName: 'Texas',
+                level: 'state',
+                lastUpdated: '2018-11-01T18:10:16.140Z',
+                precinctsReporting: 44,
+                precinctsTotal: 78,
+                precinctsReportingPct: 56.41,
+                candidates: [
+                    {
+                        first: 'Luke',
+                        last: 'Whyte',
+                        voteCount: 20,
+                        party: 'pickle',
+                    },
+                    {
+                        first: 'Evil',
+                        last: 'Twin',
+                        suffix: 'Sr.',
+                        voteCount: 1000,
+                        winner: 'X',
+                        party: 'doomsday',
+                        incumbent: true,
+                    }
+                ],
             }
         ],
         lastUpdated: '22:00:00',
@@ -152,6 +187,9 @@ test('mapRace should map an AP API race obj to a Race obj', t => {
                 incumbent: true,
             },
         ],
+        percentPrecinctsReporting: 56.41,
+        source: 'Associated Press',
+        source_url: 'https://developer.ap.org/ap-elections-api/',
     };
 
     t.deepEqual(result, expected);
@@ -162,24 +200,34 @@ test('formatData should convert raw races to Race interface and then return obje
     const apRaceNoID = {
         officeID: '234234',
         officeName: 'Dungeon Master',
-        candidates: [
+        reportingUnits: [
             {
-                first: 'Luke',
-                last: 'Whyte',
-                voteCount: 20,
-                party: 'pickle',
-            },
-            {
-                first: 'Evil',
-                last: 'Twin',
-                suffix: 'Sr.',
-                voteCount: 1000,
-                winner: 'X',
-                party: 'doomsday',
-                incumbent: true,
+                statePostal: 'TX',
+                stateName: 'Texas',
+                level: 'state',
+                lastUpdated: '2018-11-01T18:10:16.140Z',
+                precinctsReporting: 44,
+                precinctsTotal: 78,
+                precinctsReportingPct: 56.41,
+                candidates: [
+                    {
+                        first: 'Luke',
+                        last: 'Whyte',
+                        voteCount: 20,
+                        party: 'pickle',
+                    },
+                    {
+                        first: 'Evil',
+                        last: 'Twin',
+                        suffix: 'Sr.',
+                        voteCount: 1000,
+                        winner: 'X',
+                        party: 'doomsday',
+                        incumbent: true,
+                    }
+                ],
             }
         ],
-        lastUpdated: '22:00:00',
     };
 
     const apData = {

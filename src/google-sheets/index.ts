@@ -15,19 +15,9 @@ export const getEmptyData = (): GoogleSheetData => ({ houston: [], sa: [] });
 
 export const isHouston = (range: string) => range.indexOf('HOUSTON') !== -1;
 
-export const mapParty = (party: string) => {
-    const map = {
-        'Democrat': 'democrat',
-        'Republican': 'republican',
-        'Libertarian': 'libertarian',
-    };
-    return map[party] ? map[party] : 'unknown';
-};
-
 export const mapCandidate = (candidate: Array<string>, incumbent: string, winner: string) => ({
     name: candidate[0],
     votes: parseInt(candidate[1], 10),
-    party: mapParty(candidate[2]),
     incumbent: candidate[0] === incumbent,
     winner: candidate[0] === winner,
 });
@@ -38,7 +28,7 @@ export const getCandidates = (candidateArr: Array<string>, output: Array<Candida
 
     let input  = candidateArr.slice(2);
     while(input.length) {
-        output.push(mapCandidate(input.splice(0, 3), incumbent, winner));
+        output.push(mapCandidate(input.splice(0, 2), incumbent, winner));
     }
 
     return output;
