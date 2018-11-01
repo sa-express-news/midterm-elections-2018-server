@@ -99,7 +99,7 @@ test('setData should take an array of races and add them to their respective has
             ],
         },
         {
-            id: 44720,
+            id: 46057,
             title: 'Lead DogeCoin Investor',
             isNational: false,
             candidates: [
@@ -148,7 +148,7 @@ test('setData should take an array of races and add them to their respective has
     const sa = dataStore.getData('sa');
 
     let result = houston.races.map(race => race.title);
-    let expected = ['Lead Rhetoric Generator', 'Lead DogeCoin Investor'];
+    let expected = [ 'Capitol Bouncer', 'Casual Friday\'s Coordinator' ];
     t.deepEqual(result, expected);
 
     result = sa.races.map(race => race.title);

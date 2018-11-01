@@ -37,7 +37,7 @@ export const mapParty = (party: string) => {
 
 export const mapCandidate = (candidate: APDataCandidate) => ({
     name: setName(candidate),
-    votes: candidate.voteCount,
+    votes: candidate.voteCount ? candidate.voteCount : 0,
     party: mapParty(candidate.party),
     incumbent: !!candidate.incumbent,
     winner: !!candidate.winner && candidate.winner === 'X'
