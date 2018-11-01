@@ -54,7 +54,7 @@ export interface APData {
 export interface Candidate {
     name: string;
     votes: number;
-    party: string;
+    party?: string;
     incumbent: boolean;
     winner: boolean;
 }

@@ -67,21 +67,19 @@ test('isHouston should detect if data comes from Houston or SA sheet', t => {
     t.end();
 });
 
-test('mapCandidate should take a 3 element array and return a Candidate object', t => {
+test('mapCandidate should take a 2 element array and return a Candidate object', t => {
     let incumbent = 'Frankie "Mr. Big" Sharp';
     let winner = '';
 
     const candidate = [
         'Luke Whyte',
         '300',
-        'Pickle'
     ];
 
     let result = mapCandidate(candidate, incumbent, winner);
     let expected = {
         name: 'Luke Whyte',
-        votes: 300,
-        party: 'unknown',
+        votes: 300,  
         incumbent: false,
         winner: false,
     };
@@ -91,8 +89,7 @@ test('mapCandidate should take a 3 element array and return a Candidate object',
     result = mapCandidate(candidate, incumbent, winner);
     expected = {
         name: 'Luke Whyte',
-        votes: 300,
-        party: 'unknown',
+        votes: 300,  
         incumbent: false,
         winner: true,
     };
@@ -102,8 +99,7 @@ test('mapCandidate should take a 3 element array and return a Candidate object',
     result = mapCandidate(candidate, incumbent, winner);
     expected = {
         name: 'Luke Whyte',
-        votes: 300,
-        party: 'unknown',
+        votes: 300,  
         incumbent: true,
         winner: true,
     };
@@ -121,35 +117,29 @@ test('getCandidates takes array with first elements pointing to incumbent and wi
         winner,
         'Luke Whyte',
         '300',
-        'Pickle',
         'Papa Smurf',
         '500',
-        'Republican',
         'The Ultimate Warrior',
         '800',
-        'Democrat'
     ];
 
     const result = getCandidates(candidates, []);
     const expected = [
         {
             name: 'Luke Whyte',
-            votes: 300,
-            party: 'unknown',
+            votes: 300,      
             incumbent: false,
             winner: false,
         },
         {
             name: 'Papa Smurf',
-            votes: 500,
-            party: 'republican',
+            votes: 500,      
             incumbent: true,
             winner: false,
         },
         {
             name: 'The Ultimate Warrior',
-            votes: 800,
-            party: 'democrat',
+            votes: 800,      
             incumbent: false,
             winner: true,
         },
@@ -167,13 +157,10 @@ test('mapRace takes a race array of strings and returns a Race object. setIDBase
         '',
         'Luke Whyte',
         '300',
-        'Pickle',
         'Papa Smurf',
         '500',
-        'Republican',
         'The Ultimate Warrior',
         '800',
-        'Democrat'
     ];
 
     const result = mapRace(race, setIDBaseNumber('sa'));
@@ -184,22 +171,19 @@ test('mapRace takes a race array of strings and returns a Race object. setIDBase
         candidates: [
             {
                 name: 'Luke Whyte',
-                votes: 300,
-                party: 'unknown',
+                votes: 300,          
                 incumbent: false,
                 winner: false,
             },
             {
                 name: 'Papa Smurf',
-                votes: 500,
-                party: 'republican',
+                votes: 500,          
                 incumbent: true,
                 winner: false,
             },
             {
                 name: 'The Ultimate Warrior',
-                votes: 800,
-                party: 'democrat',
+                votes: 800,          
                 incumbent: false,
                 winner: false,
             },
@@ -218,13 +202,10 @@ test('parseData accepts an array GoogleSheet objects, which it iterates over to 
         '',
         'Luke Whyte',
         '300',
-        'Pickle',
         'Papa Smurf',
         '500',
-        'Republican',
         'The Ultimate Warrior',
         '800',
-        'Democrat'
     ];
 
     const raceHouston = [
@@ -234,13 +215,10 @@ test('parseData accepts an array GoogleSheet objects, which it iterates over to 
         'The Ultimate Warrior',
         'Luke Whyte',
         '300',
-        'Pickle',
         'Papa Smurf',
         '500',
-        'Republican',
         'The Ultimate Warrior',
         '800',
-        'Democrat'
     ];
 
     const sheets = [

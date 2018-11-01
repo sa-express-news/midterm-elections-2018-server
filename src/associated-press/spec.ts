@@ -8,6 +8,7 @@ import {
     setName,
     mapParty,
     mapCandidate,
+    setTitle,
     mapRace,
     formatData
 } from './index';
@@ -102,6 +103,29 @@ test('mapCandidate should map an AP API candidate obj to a Candidate obj', t => 
         winner: false,
     };
     t.deepEqual(result, expected);
+
+    t.end();
+});
+
+test('setTitle should take officeName and seatName and map to seat when appropriate', t => {
+    let officeName = 'Land Commissioner';
+    let seatName;
+
+    let result = setTitle(officeName, seatName);
+    let expected = 'Land Commissioner';
+    t.equal(result, expected);
+
+    officeName = 'State Senate';
+
+    result = setTitle(officeName, seatName);
+    expected = 'State Senate';
+    t.equal(result, expected);
+
+    seatName = 'District 21';
+
+    result = setTitle(officeName, seatName);
+    expected = 'District 21';
+    t.equal(result, expected);
 
     t.end();
 });

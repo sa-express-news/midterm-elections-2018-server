@@ -43,9 +43,20 @@ export const mapCandidate = (candidate: APDataCandidate) => ({
     winner: !!candidate.winner && candidate.winner === 'X'
 });
 
-export const mapRace = ({ raceID, officeName, national, reportingUnits }: APDataRace) => ({
+export const mapStateToTexas = (officeName: string) => {
+    const map = {
+        'State House': 'Texas House',
+        'State Senate': 'Texas Senate',
+    };
+    return map[officeName] ? map[officeName] : officeName;
+};
+
+const shouldMapToSeat = new Set(['U.S. House', 'State House', 'State Senate']);
+export const setTitle = (officeName: string, seatName: string) => shouldMapToSeat.has(officeName) && seatName ? seatName : officeName;
+
+export const mapRace = ({ raceID, officeName, seatName, national, reportingUnits }: APDataRace) => ({
     id: parseInt(raceID, 10),
-    title: officeName,
+    title: setTitle(officeName, seatName),
     isNational: !!national,
     // We only take the first reporting unit for candidates because we only want state level results
     candidates: reportingUnits[0].candidates.map(mapCandidate),
