@@ -39,7 +39,7 @@ class DataStore implements DataStoreInstance {
         const base     = process.env.AP_URL;
         const raceIDs  = `${process.env.SHARED_RACE_IDS},${process.env.HOUSTON_RACE_IDS},${process.env.SA_RACE_IDS}`;
         const apiKey   = process.env.AP_KEY;
-        return `${base}&raceID=${raceIDs}${this.addAPIKeyToURL()}&test=true`;
+        return `${base}&raceID=${raceIDs}${this.addAPIKeyToURL()}`;
     }
 
     private addToHash (race: Race, market: 'houston' | 'sa') {
