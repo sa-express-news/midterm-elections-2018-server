@@ -16,7 +16,7 @@ const handler = (req: IncomingMessage, res: ServerResponse) => {
 }
 const server = createServer(handler);
 const io = socketIO(server, {
-    path: '/2018-primary-elections',
+    path: '/2018-midterm-elections',
     serveClient: false,
     origins: '*:*'
 });

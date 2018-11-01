@@ -6,5 +6,6 @@
 .google-sheets-credentials.json
 
 .env
+*.pem
 
 yarn-error.log
