@@ -48,7 +48,10 @@ export const mapRace = ({ raceID, officeName, national, reportingUnits }: APData
     title: officeName,
     isNational: !!national,
     // We only take the first reporting unit for candidates because we only want state level results
-    candidates: reportingUnits[0].candidates.map(mapCandidate), 
+    candidates: reportingUnits[0].candidates.map(mapCandidate),
+    percentPrecinctsReporting: reportingUnits[0].precinctsReportingPct ? reportingUnits[0].precinctsReportingPct : 0,
+    source: 'Associated Press',
+    source_url: 'https://developer.ap.org/ap-elections-api/',
 });
 
 export const formatData = (apData: APData) => ({

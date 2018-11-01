@@ -64,6 +64,9 @@ export interface Race {
     title: string;
     isNational: boolean;
     candidates: Array<Candidate>;
+    percentPrecinctsReporting?: number;
+    source?: string;
+    source_url?: string;
 }
 
 // Data store interfaces

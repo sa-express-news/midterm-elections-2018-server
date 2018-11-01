@@ -163,6 +163,9 @@ test('mapRace should map an AP API race obj to a Race obj', t => {
                 incumbent: true,
             },
         ],
+        percentPrecinctsReporting: 56.41,
+        source: 'Associated Press',
+        source_url: 'https://developer.ap.org/ap-elections-api/',
     };
 
     t.deepEqual(result, expected);
