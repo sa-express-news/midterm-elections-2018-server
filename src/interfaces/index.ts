@@ -39,7 +39,8 @@ export interface APDataRace {
     uncontested?: boolean;
     national?: boolean;
     lastUpdated?: string;
-    reportingUnits: Array<APDataReportingUnits>;
+    reportingUnits?: Array<APDataReportingUnits>;
+    candidates?: Array<APDataCandidate>;
 }
 
 export interface APData {

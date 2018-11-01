@@ -11,7 +11,7 @@ test('getAPUrl constructs query URL', t => {
     const raceIDs  = `${process.env.SHARED_RACE_IDS},${process.env.HOUSTON_RACE_IDS},${process.env.SA_RACE_IDS}`;
 
     const result = dataStore.getAPUrl();
-    const expected = `https://api.ap.org/v2/elections/2018-11-06?format=json&raceID=${raceIDs}&test=true&apiKey=${apiKey}`;
+    const expected = `https://api.ap.org/v2/elections/2018-11-06?format=json&raceID=${raceIDs}&apiKey=${apiKey}`;
     
     t.equal(result, expected);
     t.end();
