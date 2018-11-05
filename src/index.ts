@@ -34,7 +34,7 @@ const main = async () => {
             socket.sockets.emit('sa', JSON.stringify(dataStore.getData('sa')));
         };
 
-        setInterval(updateDataStore, 90000);
+        setInterval(updateDataStore, 60000);
     } catch (error) {
         logger.error(`The wheels are off. All hands on deck. main() is throwing the following error: ${error.toString()}`);
     }
