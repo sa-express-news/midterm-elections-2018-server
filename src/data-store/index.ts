@@ -21,11 +21,11 @@ class DataStore implements DataStoreInstance {
     private initalizeRaceHash () {
         return {
             houston: {
-                ids: this.setRaceIDSet(process.env.HOUSTON_RACE_IDS),
+                ids: this.setRaceIDSet(`${process.env.HOUSTON_RACE_IDS},${process.env.GS_HOUSTON_IDS}`),
                 hash: new Map(),
             },
             sa: {
-                ids: this.setRaceIDSet(process.env.SA_RACE_IDS),
+                ids: this.setRaceIDSet(`${process.env.SA_RACE_IDS},${process.env.GS_SA_IDS}`),
                 hash: new Map(),
             },
         };
@@ -43,12 +43,8 @@ class DataStore implements DataStoreInstance {
     }
 
     private addToHash (race: Race, market: 'houston' | 'sa') {
-        this.races[market].hash.set(race.id, race);
-    }
-
-    private conditionallyAddToHash (race: Race, market: 'houston' | 'sa') {
         if (this.races[market].ids.has(race.id)) {
-            this.addToHash(race, market);
+            this.races[market].hash.set(race.id, race);
         }
     }
 
@@ -65,8 +61,8 @@ class DataStore implements DataStoreInstance {
             if (market) {
                 this.addToHash(race, market);
             } else {
-                this.conditionallyAddToHash(race, 'houston');
-                this.conditionallyAddToHash(race, 'sa');
+                this.addToHash(race, 'houston');
+                this.addToHash(race, 'sa');
             }
         })
     }

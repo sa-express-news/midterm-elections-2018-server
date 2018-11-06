@@ -254,7 +254,7 @@ test('parseData accepts an array GoogleSheet objects, which it iterates over to 
 test('getData performs above operations on live data after successful oAuth connection. On failure it returns empty GoogleSheetsData object', async t => {
     const data = await getData(process.env.SPREADSHEET_ID, ['HOUSTON!A2:AB', 'SAN_ANTONIO!A2:AB'], createLogger());
     const result = data.houston[0].id;
-    const expected = 100002;
+    const expected = 100013;
     t.equal(result, expected);
 
     const failedData = await getData('not_an_id', ['HOUSTON!A2:AB', 'SAN_ANTONIO!A2:AB'], createLogger());
